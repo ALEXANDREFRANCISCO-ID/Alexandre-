@@ -1,72 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cadastro e Geração de Recibo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+  <title>Certificado</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      padding: 40px;
+      text-align: center;
+    }
 
-        .form-group {
-            margin-bottom: 10px;
-        }
+    .certificate {
+      width: 800px;
+      height: 600px;
+      margin: 0 auto;
+      border: 1px solid black;
+      padding: 20px;
+      text-align: center;
+    }
 
-        .form-group label {
-            display: inline-block;
-            width: 140px;
-        }
+    .certificate h1 {
+      margin-bottom: 40px;
+    }
 
-        .button {
-            margin-top: 20px;
-        }
-    </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-
+    .certificate p {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Cadastro de Cliente</h1>
-    <form id="cadastroForm">
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-        </div>
-        <div class="form-group">
-            <label for="telefone">Telefone:</label>
-            <input type="tel" id="telefone" required>
-        </div>
-        <div class="button">
-            <button type="submit">Cadastrar</button>
-        </div>
-    </form>
+  <div class="certificate">
+    <h1>Certificado</h1>
+    <p>Este certifica que <span id="nomeEstudante"></span> completou com sucesso o curso XYZ.</p>
+  </div>
 
-    <script>
-        document.getElementById('cadastroForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Impede o envio tradicional do formulário
+  <script>
+    // Código para gerar o certificado
+    var doc = new jsPDF();
 
-            // Obtém os valores do formulário
-            var nome = document.getElementById('nome').value;
-            var email = document.getElementById('email').value;
-            var telefone = document.getElementById('telefone').value;
+    // Centralizar o conteúdo na página
+    var certificate = document.querySelector('.certificate');
+    var certificateStyle = getComputedStyle(certificate);
+    var certificateWidth = parseInt(certificateStyle.width);
+    var certificateHeight = parseInt(certificateStyle.height);
+    var marginLeft = (doc.internal.pageSize.getWidth() - certificateWidth) / 2;
+    var marginTop = (doc.internal.pageSize.getHeight() - certificateHeight) / 2;
 
-            // Gera o recibo em PDF
-            var doc = new jsPDF();
-            doc.text("Recibo de Cadastro", 20, 20);
-            doc.text("Nome: " + nome, 20, 30);
-            doc.text("Email: " + email, 20, 40);
-            doc.text("Telefone: " + telefone, 20, 50);
-            doc.save("recibo.pdf");
+    doc.setFontSize(30);
+    doc.text('Certificado', doc.internal.pageSize.getWidth() / 2, 60, { align: 'center' });
+    doc.setFontSize(20);
+    doc.text('Este certifica que', doc.internal.pageSize.getWidth() / 2, 120, { align: 'center' });
+    doc.text('NOME_ESTUDANTE', doc.internal.pageSize.getWidth() / 2, 150, { align: 'center' });
+    doc.text('completou com sucesso o curso XYZ.', doc.internal.pageSize.getWidth() / 2, 180, { align: 'center' });
 
-            // Limpa os campos do formulário
-            document.getElementById('nome').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('telefone').value = '';
-        });
-    </script>
+    // Gerar PDF
+    doc.save('certificado.pdf');
+
+    // Atribuir um nome de estudante específico
+    var nomeEstudante = document.getElementById('nomeEstudante');
+    nomeEstudante.textContent = 'João Silva';
+  </script>
 </body>
 </html>
