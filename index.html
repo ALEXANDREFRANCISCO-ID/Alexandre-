@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,56 +6,57 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 </head>
 <body>
-    <div id="certificado">
-        <h1>Certificado</h1>
-        <p>Preencha o formulário para gerar o certificado:</p>
-        <form id="formulario">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome"><br><br>
-            
-            <label for="curso">Curso:</label>
-            <input type="text" id="curso" name="curso"><br><br>
-            
-            <button type="button" onclick="gerarCertificado()">Gerar Certificado</button>
-        </form>
-    </div>
+    form id="inscricaoForm">
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome"><br><br>
+  
+  <label for="curso">Curso:</label>
+  <input type="text" id="curso" name="curso"><br><br>
+  
+  <label for="codigo">Código:</label>
+  <input type="text" id="codigo" name="codigo"><br><br>
+  
+  <button type="button" onclick="gerarCertificado()">Gerar Certificado</button>
+</form>
 
-    <script>
-        function gerarCertificado() {
-            // Obter os valores do formulário
-            var nome = document.getElementById('nome').value;
-            var curso = document.getElementById('curso').value;
+    <function gerarCertificado() {
+  var doc = new jsPDF();
 
-            // Criar um novo documento
-            var doc = new jsPDF();
-            
-            // Definir o conteúdo do certificado
-            var conteudo = `Certificamos que ${nome} concluiu o curso de ${curso}.`;
+  var nome = document.getElementById("nome").value;
+  var curso = document.getElementById("curso").value;
+  var codigo = document.getElementById("codigo").value;
 
-            // Centralizar o conteúdo
-            var textoWidth = doc.getTextWidth(conteudo);
-            var pdfWidth = doc.internal.pageSize.getWidth();
-            var pdfHeight = doc.internal.pageSize.getHeight();
-            var x = (pdfWidth - textoWidth) / 2;
-            var y = pdfHeight / 2 - 10;
+  // Configurar fonte e tamanho
+  doc.setFont("helvetica");
+  doc.setFontSize(14);
+  
+  // Centralizar conteúdos
+  var textWidth = doc.getStringUnitWidth(nome) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+  var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+  
+  doc.text(textOffset, 100, nome);
+  doc.text(textOffset, 120, curso);
+  
+  // Rodapé superior
+  doc.setFontSize(10);
+  doc.text("Certificado emitido em " + new Date().toLocaleDateString(), 20, doc.internal.pageSize.height - 20);
 
-            // Adicionar o conteúdo ao documento
-           doc.setFontSize(12);
-           doc.text(conteudo, x, y);
+  // Rodapé inferior
+  doc.setFontSize(12);
+  doc.text("Código: " + codigo, 20, doc.internal.pageSize.height - 10);
+  
+  // Adicionar assinatura
+  doc.addImage("assinatura.png", "PNG", 20, doc.internal.pageSize.height - 50, 80, 0);
+  
+  // Adicionar logótipo da instituição
+  doc.addImage("logotipo.png", "PNG", doc.internal.pageSize.width - 100, 20, 80, 0);
+  
+  // Gerar código diferente para cada certificado emitido
+  var codigoUnico = Math.floor(Math.random() * 100000);
 
-           // Adicionar rodapé superior e inferior
-           doc.setFontSize(8);
-           doc.text("Rodapé Superior", 10, 10);
-           doc.text("Rodapé Inferior", 10, pdfHeight - 10);
+  // Gerar o certificado
+  doc.save("Certificado_" + codigoUnico + ".pdf");
+}
 
-           // Gerar um código único para cada certificado
-           var codigo = Math.floor(Math.random() * 1000000);
-           doc.setFontSize(10);
-           doc.text(`Código: ${codigo}`, 10, pdfHeight - 20);
-
-           // Salvar o documento como PDF
-           doc.save("certificado.pdf");
-        }
-    </script>
 </body>
 </html>
