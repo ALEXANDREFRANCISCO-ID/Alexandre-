@@ -1,65 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Certificado</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <style>
-    body {
-      padding: 40px;
-      text-align: center;
-    }
-
-    .certificate {
-      width: 800px;
-      height: 600px;
-      margin: 0 auto;
-      border: 1px solid black;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .certificate h1 {
-      margin-bottom: 40px;
-    }
-
-    .certificate p {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-  </style>
+    <title>Certificado</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 </head>
 <body>
-  <div class="certificate">
-    <h1>Certificado</h1>
-    <p>Este certifica que <span id="nomeEstudante"></span> completou com sucesso o curso XYZ.</p>
-  </div>
+    <div id="certificado">
+        <h1>Certificado</h1>
+        <p>Preencha o formulário para gerar o certificado:</p>
+        <form id="formulario">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome"><br><br>
+            
+            <label for="curso">Curso:</label>
+            <input type="text" id="curso" name="curso"><br><br>
+            
+            <button type="button" onclick="gerarCertificado()">Gerar Certificado</button>
+        </form>
+    </div>
 
-  <script>
-    // Código para gerar o certificado
-    var doc = new jsPDF();
+    <script>
+        function gerarCertificado() {
+            // Obter os valores do formulário
+            var nome = document.getElementById('nome').value;
+            var curso = document.getElementById('curso').value;
 
-    // Centralizar o conteúdo na página
-    var certificate = document.querySelector('.certificate');
-    var certificateStyle = getComputedStyle(certificate);
-    var certificateWidth = parseInt(certificateStyle.width);
-    var certificateHeight = parseInt(certificateStyle.height);
-    var marginLeft = (doc.internal.pageSize.getWidth() - certificateWidth) / 2;
-    var marginTop = (doc.internal.pageSize.getHeight() - certificateHeight) / 2;
+            // Criar um novo documento
+            var doc = new jsPDF();
+            
+            // Definir o conteúdo do certificado
+            var conteudo = `Certificamos que ${nome} concluiu o curso de ${curso}.`;
 
-    doc.setFontSize(30);
-    doc.text('Certificado', doc.internal.pageSize.getWidth() / 2, 60, { align: 'center' });
-    doc.setFontSize(20);
-    doc.text('Este certifica que', doc.internal.pageSize.getWidth() / 2, 120, { align: 'center' });
-    doc.text('NOME_ESTUDANTE', doc.internal.pageSize.getWidth() / 2, 150, { align: 'center' });
-    doc.text('completou com sucesso o curso XYZ.', doc.internal.pageSize.getWidth() / 2, 180, { align: 'center' });
+            // Centralizar o conteúdo
+            var textoWidth = doc.getTextWidth(conteudo);
+            var pdfWidth = doc.internal.pageSize.getWidth();
+            var pdfHeight = doc.internal.pageSize.getHeight();
+            var x = (pdfWidth - textoWidth) / 2;
+            var y = pdfHeight / 2 - 10;
 
-    // Gerar PDF
-    doc.save('certificado.pdf');
+            // Adicionar o conteúdo ao documento
+           doc.setFontSize(12);
+           doc.text(conteudo, x, y);
 
-    // Atribuir um nome de estudante específico
-    var nomeEstudante = document.getElementById('nomeEstudante');
-    nomeEstudante.textContent = 'João Silva';
-  </script>
+           // Adicionar rodapé superior e inferior
+           doc.setFontSize(8);
+           doc.text("Rodapé Superior", 10, 10);
+           doc.text("Rodapé Inferior", 10, pdfHeight - 10);
+
+           // Gerar um código único para cada certificado
+           var codigo = Math.floor(Math.random() * 1000000);
+           doc.setFontSize(10);
+           doc.text(`Código: ${codigo}`, 10, pdfHeight - 20);
+
+           // Salvar o documento como PDF
+           doc.save("certificado.pdf");
+        }
+    </script>
 </body>
 </html>
