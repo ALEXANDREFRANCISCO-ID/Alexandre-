@@ -1,62 +1,68 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
-    <title>Certificado</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <meta charset="UTF-8">
+    <title>Título da página</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
 </head>
-<body>
-    <form id="inscricaoForm">
+<body><form id="formCertificado">
   <label for="nome">Nome:</label>
   <input type="text" id="nome" name="nome"><br><br>
   
-  <label for="curso">Curso:</label>
-  <input type="text" id="curso" name="curso"><br><br>
-  
-  <label for="codigo">Código:</label>
+  <label for="codigo">Código Pessoal:</label>
   <input type="text" id="codigo" name="codigo"><br><br>
-  
+
   <button type="button" onclick="gerarCertificado()">Gerar Certificado</button>
-    </form>
+</form>
+
     <script>
-function gerarCertificado() {
-  var doc = new jsPDF();
+        //function gerarCertificado() {
+  // Pegando os valores do formulário
+  
+  const nome = document.getElementById('nome').value;
+  const codigo = document.getElementById('codigo').value;
+  
+  // Criando um novo documento jsPDF
+  const doc = new jsPDF();
 
-  var nome = document.getElementById("nome").value;
-  var curso = document.getElementById("curso").value;
-  var codigo = document.getElementById("codigo").value;
+  // Definindo as configurações da página, tamanho e margem
+  doc.addPage();
+  doc.setFillColor('#ffd700'); // margem dourada
+  doc.rect(10, 10, 190, 270, 'F'); // retângulo dourado
 
-  // Configurar fonte e tamanho
-  doc.setFont("helvetica");
+  // Adicionando o logo certificado no canto superior esquerdo
+  const img = new Image();
+  img.src = 'caminho_do_logo_certificado.jpg';
+  doc.addImage(img, 'JPEG', 20, 20, 30, 30);
+
+  // Adicionando o texto "Certificamos que"
+  doc.setFontSize(18);
+  doc.text('Certificamos que:', 60, 30);
+
+  // Adicionando o nome do estudante fornecido no formulário
   doc.setFontSize(14);
-  
-  // Centralizar conteúdos
-  var textWidth = doc.getStringUnitWidth(nome) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-  var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
-  
-  doc.text(textOffset, 100, nome);
-  doc.text(textOffset, 120, curso);
-  
-  // Rodapé superior
-  doc.setFontSize(10);
-  doc.text("Certificado emitido em " + new Date().toLocaleDateString(), 20, doc.internal.pageSize.height - 20);
+  doc.text(nome, 20, 60);
 
-  // Rodapé inferior
+  // Adicionando o texto de descrição do curso
   doc.setFontSize(12);
-  doc.text("Código: " + codigo, 20, doc.internal.pageSize.height - 10);
-  
-  // Adicionar assinatura
-  doc.addImage("assinatura.png", "PNG", 20, doc.internal.pageSize.height - 50, 80, 0);
-  
-  // Adicionar logótipo da instituição
-  doc.addImage("logotipo.png", "PNG", doc.internal.pageSize.width - 100, 20, 80, 0);
-  
-  // Gerar código diferente para cada certificado emitido
-  var codigoUnico = Math.floor(Math.random() * 100000);
+  doc.text('Descrição do curso:', 20, 80);
 
-  // Gerar o certificado
-  doc.save("Certificado_" + codigoUnico + ".pdf");
-}
+  // Adicionando a data de emissão
+  doc.text('Data de emissão:', 20, 100);
+
+  // Adicionando a duração do curso
+  doc.text('Duração do curso:', 20, 120);
+
+  // Adicionando o logo de assinatura
+  const imgAssinatura = new Image();
+  imgAssinatura.src = 'caminho_do_logo_assinatura.jpg';
+  doc.addImage(imgAssinatura, 'JPEG', 20, 140, 30, 30);
+
+  // Salvando o PDF com o nome do estudante e código pessoal
+  doc.save('Certificado_' + nome + '_' + codigo + '.pdf');
+
+
     </script>
 </body>
 </html>
