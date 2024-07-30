@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horário do Mês Atual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        caption {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .past {
+            background-color: #f8d7da; /* Vermelho claro */
+            text-decoration: line-through;
+        }
+        .current-day {
+            background-color: #ffeb3b; /* Amarelo claro */
+        }
+    </style>
+</head>
+<body>
+    <h1>Horário do Mês Atual</h1>
+    <table>
+        <caption id="caption">Mês Atual</caption>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="schedule">
+            <!-- Linhas para os dias úteis serão inseridas aqui pelo JavaScript -->
+        </tbody>
+    </table>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth(); // 0 para janeiro, 7 para agosto
+            const day = today.getDate();
+            const tbody = document.getElementById('schedule');
+            const caption = document.getElementById('caption');
+
+            // Função para formatar a data no formato dd/mm/aaaa
+            function formatDate(d) {
+                return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+            }
+
+            // Função para verificar se a data é passada
+            function isPast(date) {
+                return date < today;
+            }
+
+            // Atualiza o título da tabela com o mês e ano atuais
+            const monthNames = [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+            caption.textContent = `${monthNames[month]} ${year}`;
+
+            // Adiciona as linhas da tabela
+            const lastDay = new Date(year, month + 1, 0).getDate(); // Último dia do mês
+            for (let i = 1; i <= lastDay; i++) {
+                const date = new Date(year, month, i);
+                const isCurrentDay = (date.getDate() === day);
+                const status = isCurrentDay ? 'Hoje' : (isPast(date) ? 'Passado' : '');
+                const rowClass = isCurrentDay ? 'current-day' : (isPast(date) ? 'past' : '');
+
+                const row = document.createElement('tr');
+                row.className = rowClass;
+
+                row.innerHTML = `
+                    <td>${formatDate(date)}</td>
+                    <td>19:30</td>
+                    <td>${status}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        });
+    </script>
+</body>
+</html>
