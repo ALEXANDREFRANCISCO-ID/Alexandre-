@@ -1,63 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Certificado</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutoria e Termos e Condições</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .modal-dialog {
+            max-width: 800px;
+        }
+        .modal-content {
+            border-radius: 8px;
+        }
+    </style>
 </head>
-  <body>
-  <!-- Formulário -->
-  <form>
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome"><br>
+<body>
 
-    <label for="codigo">Código Pessoal:</label>
-    <input type="text" id="codigo"><br>
+    <!-- Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Termos e Condições</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Termos e Condições de Participação</h4>
+                    <p>Bem-vindo ao IFPPREPARATORIO, um programa de tutoria online e pago. Ao participar de nossas sessões de tutoria, você concorda com os seguintes termos e condições:</p>
+                    <ul>
+                        <li><strong>Natureza do Serviço:</strong> As tutoriais são oferecidas online e são pagas. O pagamento deve ser efetuado antes do início das sessões.</li>
+                        <li><strong>Comprometimento:</strong> Espera-se que os participantes estejam comprometidos com o aprendizado e compareçam às sessões conforme agendado.</li>
+                        <li><strong>Cancelamentos e Reembolsos:</strong> Cancellamentos devem ser feitos com pelo menos 24 horas de antecedência. Não serão oferecidos reembolsos por sessões não comparecidas.</li>
+                        <li><strong>Privacidade:</strong> Todos os dados fornecidos serão tratados com confidencialidade e utilizados apenas para fins relacionados ao serviço de tutoria.</li>
+                        <li><strong>Responsabilidade:</strong> O IFPPREPARATORIO se reserva o direito de alterar os termos e condições e atualizar as informações conforme necessário.</li>
+                    </ul>
+                    <p>Ao continuar, você concorda com todos os termos e condições acima. Se você não concorda, por favor, não participe das sessões de tutoria.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="rejectTerms">Rejeitar</button>
+                    <button type="button" class="btn btn-primary" id="acceptTerms">Aceitar e Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <button onclick="gerarCertificado()">Gerar Certificado</button>
-  </form>
+    <!-- Página Principal -->
+    <div class="container">
+        <!-- Imagem no topo -->
+        <header>
+            <img src="logo.png" alt="Imagem de Vitrine" class="header-image">
+        </header>
+<style>
+  .header-image{
+    width:200px;
+  }
+</style>
+        <div class="schedule-header">
+           <h3>Vitrine para Grupo de Preparação de Exames de Admissão</h3>
+        </div>
 
-  <script>
-    function gerarCertificado() {
-      // Dados do formulário
-      var nome = document.getElementById("nome").value;
-      var codigo = document.getElementById("codigo").value;
+        <div class="row">
+            <!-- Card 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card schedule-card">
+                    <a href="horário.html">
+                        <div class="card-body">
+                            <i class="fas fa-book"></i>
+                            Horário de cada mês
+                        </div>
+                    </a>
+                </div>
+            </div>
 
-      // Criação do documento PDF
-      var doc = new jsPDF();
+            <!-- Card 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card schedule-card">
+                    <a href="nota1.html">
+                        <div class="card-body">
+                            <i class="fas fa-calendar-alt"></i>
+                            Preparação Diária
+                        </div>
+                    </a>
+                </div>
+            </div>
 
-      // Configuração de estilo
-      doc.setDrawColor("#D4AF37"); // Cor da margem dourada
-      doc.setLineWidth(20); // Tamanho da margem
+            <!-- Card 3 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card schedule-card">
+                    <a href="vantagem.html">
+                        <div class="card-body">
+                            <i class="fas fa-dollar-sign"></i>
+                            O Custo do Ensino
+                        </div>
+                    </a>
+                </div>
+            </div>
 
-      // Adiciona a margem dourada
-      doc.line(0, 0, 0, doc.internal.pageSize.height); // Margem esquerda
-      doc.line(doc.internal.pageSize.width, 0, doc.internal.pageSize.width, doc.internal.pageSize.height); // Margem direita
+            <!-- Card 4 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card schedule-card">
+                    <a href="sobre.html">
+                        <div class="card-body">
+                            <i class="fas fa-info-circle"></i>
+                            Sobre
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- Continue adicionando blocos até ter 20 divs -->
+        </div>
+    </div>
 
-      // Adiciona o logótipo no canto esquerdo
-      var logo = new Image();
-      logo.src = "logo-oficial.jpg";
-      doc.addImage(logo, "PNG", 20, 20, 50, 50); // Posição e tamanho do logótipo
+    <!-- Scripts do Bootstrap e jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Verifica se o usuário já aceitou os termos
+            if (!localStorage.getItem('termsAccepted')) {
+                $('#termsModal').modal('show');
+            }
 
-      // Adiciona os elementos de texto
-      doc.setFontSize(18);
-      doc.text("Certificamos que", 80, 40);
-      doc.setFontSize(24);
-      doc.text(nome, 80, 65);
-      doc.setFontSize(18);
-      doc.text("concluiu o curso", 80, 90);
-      doc.text("de exemplo", 80, 115);
-      doc.setFontSize(12);
-      doc.text("Data de Emissão: XX/XX/XXXX", 40, 140);
-      doc.text("Duração do Curso: XX horas", 40, 155);
+            // Define o evento para o botão de aceitação
+            $('#acceptTerms').click(function() {
+                // Salva a aceitação no localStorage
+                localStorage.setItem('termsAccepted', 'true');
+                // Fecha o modal
+                $('#termsModal').modal('hide');
+            });
 
-      // Adiciona o logótipo de assinatura
-      var assinatura = new Image();
-      assinatura.src = "assinatura.jpg";
-      doc.addImage(assinatura, "PNG", doc.internal.pageSize.width - 100, doc.internal.pageSize.height - 100, 80, 80); // Posição e tamanho da assinatura
-
-      // Salva e faz o download do PDF
-      doc.save("certificado.pdf");
-    }
-  </script>
+            // Define o evento para o botão de rejeição
+            $('#rejectTerms').click(function() {
+                // Redireciona para uma página de rejeição ou erro
+                window.location.href = 'nego.html'; // Substitua com a URL desejada
+            });
+        });
+    </script>
 </body>
 </html>
